@@ -16,8 +16,10 @@ namespace Winnitron {
         protected IEnumerator Wait(UnityWebRequest www, Success success) {
             yield return www.SendWebRequest();
 
-            if (www.isNetworkError || www.isHttpError) {
-                HandleError(www);
+            if (www.isNetworkError) {
+                HandleError(www, "Network Error:");
+            } else if (www.isHttpError) {
+                HandleError(www, "HTTP Error:");
             } else {
                 success(www);
             }
@@ -28,8 +30,21 @@ namespace Winnitron {
             www.SetRequestHeader("Authorization", Authorization(www));
         }
 
-        protected void HandleError(UnityWebRequest www) {
-            Debug.Log("something went wrong: " + www.error);
+        protected void HandleError(UnityWebRequest www, string msgPrepend = null) {
+            string[] components = {
+                msgPrepend,
+                www.responseCode.ToString(),
+                (www.responseCode >= 500 ? www.error : null),
+                ParseErrors(www.downloadHandler.text)
+            };
+
+            string msg = "";
+            foreach (string s in components) {
+                if (s != null && s != "")
+                    msg += (s + "\t");
+            }
+
+            Debug.Log(msg);
         }
 
         private string Authorization(UnityWebRequest www) {
@@ -53,6 +68,10 @@ namespace Winnitron {
             hex = hex.Replace("-", "");
 
             return hex;
+        }
+
+        private string ParseErrors(string json) {
+            return json; // TODO
         }
     }
 }
