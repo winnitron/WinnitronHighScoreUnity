@@ -33,18 +33,18 @@ namespace Winnitron {
         protected void HandleError(UnityWebRequest www, string msgPrepend = null) {
             string[] components = {
                 msgPrepend,
-                www.responseCode.ToString(),
-                (www.responseCode >= 500 ? www.error : null),
+                (www.responseCode > 0 ? www.responseCode.ToString() : null),
+                www.error,
                 ParseErrors(www.downloadHandler.text)
             };
 
             string msg = "";
             foreach (string s in components) {
                 if (s != null && s != "")
-                    msg += (s + "\t");
+                    msg += (s + " ");
             }
 
-            Debug.Log(msg);
+            throw new Winnitron.NetworkException(msg);
         }
 
         private string Authorization(UnityWebRequest www) {
