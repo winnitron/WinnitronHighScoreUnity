@@ -1,14 +1,17 @@
 namespace Winnitron {
+
     public class HighScore  {
 
-        public string name;
-        public int score;
+        public string Name { get; private set; }
+        public int Score { get; private set; }
+        // TODO: which winnitron?
 
         public HighScore(string name, int score) {
-            this.name = name;
-            this.score = score;
+            Name = name;
+            Score = score;
         }
 
+        // TODO
         public HighScore(string json) {}
     }
 }

@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.Networking;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ namespace Winnitron {
         public string apiKey;
         public string apiSecret;
 
-        protected delegate void Success(UnityWebRequest www);
+        public delegate object Success(UnityWebRequest www);
 
         protected IEnumerator Wait(UnityWebRequest www, Success success) {
             yield return www.SendWebRequest();
@@ -40,15 +41,17 @@ namespace Winnitron {
 
             string msg = "";
             foreach (string s in components) {
-                if (s != null && s != "")
+                if (string.IsNullOrEmpty(s))
                     msg += (s + " ");
             }
 
+            // TODO: different exception types based on response code
+            // e.g., it's not a NetworkException if it's a user-error 422.
             throw new Winnitron.NetworkException(msg);
         }
 
         private string Authorization(UnityWebRequest www) {
-            if (apiSecret == null || apiSecret == "") {
+            if (string.IsNullOrEmpty(apiSecret)) {
                 return "Token " + apiKey;
             } else {
                 string query_str = System.Text.Encoding.UTF8.GetString(www.uploadHandler.data);

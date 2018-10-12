@@ -12,31 +12,29 @@ namespace Winnitron {
 
         }
 
-        public void SendHighScore(string name, int score) {
+        public void SendHighScore(HighScore highScore, Success success = null) {
+            if (success == null)
+                success = HandleScoreCreation;
+
             // These must be ordered alphabetically by key to get the right hash later.
             WWWForm fields = new WWWForm();
-            fields.AddField("name", name);
-            fields.AddField("score", score.ToString());
-
-            // string query_str = "name=" + name + "&score=" + score;
-            // List<IMultipartFormSection> fields = new List<IMultipartFormSection>();
-            // fields.Add( new MultipartFormDataSection(query_str) );
+            fields.AddField("name", highScore.Name);
+            fields.AddField("score", highScore.Score.ToString());
 
             UnityWebRequest www = UnityWebRequest.Post("http://localhost:3000/api/v1/high_scores", fields);
 
             AddHeaders(www);
 
-            Debug.Log("OK");
-
-            StartCoroutine(Wait(www, HandleScoreCreation));
+            StartCoroutine(Wait(www, success));
         }
 
         public void GetHighScores() {
             // TODO
         }
 
-        private void HandleScoreCreation(UnityWebRequest www) {
-            Debug.Log("created!");
+        private object HandleScoreCreation(UnityWebRequest www) {
+            Debug.Log("HandleScoreCreation: " + www.downloadHandler.text);
+            return null;
         }
 
         private void HandleGetScores(UnityWebRequest www) {
