@@ -54,7 +54,15 @@ namespace Winnitron {
             if (string.IsNullOrEmpty(apiSecret)) {
                 return "Token " + apiKey;
             } else {
-                string query_str = System.Text.Encoding.UTF8.GetString(www.uploadHandler.data);
+                // TODO: A GET request doesn't have an uploadHandler object, I think.
+                // There might be a better way to do this? I'm on a plane right now.
+                string query_str = "";
+                if (www.method == "GET" && www.url.Contains("?")) {
+                    query_str = www.url.Split('?')[1];
+                } else {
+                    query_str = System.Text.Encoding.UTF8.GetString(www.uploadHandler.data);
+                }
+
                 string signature = HexHash(query_str + apiSecret);
 
                 return "Winnitron " + apiKey + ":" + signature;
