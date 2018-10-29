@@ -12,9 +12,10 @@ namespace Winnitron {
         public string apiKey;
         public string apiSecret;
 
-        public delegate object Success(UnityWebRequest www);
+        public delegate object Success(object results);
+        protected delegate void Parser(UnityWebRequest www, Success success);
 
-        protected IEnumerator Wait(UnityWebRequest www, Success success) {
+        protected IEnumerator Wait(UnityWebRequest www, Parser parser, Success success) {
             yield return www.SendWebRequest();
 
             if (www.isNetworkError) {
@@ -22,7 +23,7 @@ namespace Winnitron {
             } else if (www.isHttpError) {
                 HandleError(www, "HTTP Error:");
             } else {
-                success(www);
+                parser(www, success);
             }
         }
 
