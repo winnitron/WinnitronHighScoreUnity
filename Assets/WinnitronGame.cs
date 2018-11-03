@@ -17,13 +17,13 @@ namespace Winnitron {
             fields.AddField("name", highScore.Name);
             fields.AddField("score", highScore.Score.ToString());
 
-            UnityWebRequest www = UnityWebRequest.Post("http://localhost:3000/api/v1/high_scores", fields);
+            UnityWebRequest www = UnityWebRequest.Post(HOST + "/api/v1/high_scores", fields);
             AddHeaders(www);
             StartCoroutine(Wait(www, ParseHighScore, success));
         }
 
         public void GetHighScores(int limit, Success success) {
-            UnityWebRequest www = UnityWebRequest.Get("http://localhost:3000/api/v1/high_scores?limit=" + limit);
+            UnityWebRequest www = UnityWebRequest.Get(HOST + "/api/v1/high_scores?limit=" + limit);
             AddHeaders(www);
             StartCoroutine(Wait(www, ParseHighScores, success));
         }
@@ -40,7 +40,8 @@ namespace Winnitron {
 
         // temp
         private object DefaultSuccess(object results) {
-            Debug.Log("success: " + results.ToString());
+            HighScore[] s = (HighScore[]) results;
+            Debug.Log("success: " + s[0].ToString());
             return null;
         }
     }

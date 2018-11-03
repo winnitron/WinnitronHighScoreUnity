@@ -8,6 +8,7 @@ namespace Winnitron {
 
     public class WinnitronConnection : MonoBehaviour {
         public const string VERSION = "0.1";
+        protected const string HOST = "http://localhost:3000";
 
         public string apiKey;
         public string apiSecret;

@@ -19,7 +19,7 @@ namespace Winnitron {
         }
 
         public static HighScore[] ListFromJson(string raw) {
-            JSONArray json = JSON.Parse(raw).AsArray;
+            JSONArray json = JSON.Parse(raw)["high_scores"].AsArray;
             HighScore[] scores = new HighScore[json.Count];
 
             for(int i = 0; i < json.Count; i++) {
