@@ -12,6 +12,7 @@ namespace Winnitron {
 
         public string apiKey;
         public string apiSecret;
+        public bool testMode = true;
 
         public delegate object Success(object results);
         protected delegate void Parser(UnityWebRequest www, Success success);
