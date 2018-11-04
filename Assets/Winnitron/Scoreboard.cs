@@ -5,13 +5,13 @@ using UnityEngine;
 
 namespace Winnitron {
 
-    public class WinnitronGame : WinnitronConnection {
+    public class Scoreboard : WinnitronConnection {
 
         public void Start() {
 
         }
 
-        public void SendHighScore(HighScore highScore, Success success) {
+        public void Send(HighScore highScore, Success success) {
             // These must be ordered alphabetically by key to get the right hash later.
             WWWForm fields = new WWWForm();
             fields.AddField("name", highScore.Name);
@@ -30,7 +30,7 @@ namespace Winnitron {
             StartCoroutine(Wait(www, ParseHighScore, success));
         }
 
-        public void GetHighScores(int limit, Success success) {
+        public void Get(int limit, Success success) {
             string url = HOST + "/api/v1/high_scores?limit=" + limit;
 
             if (testMode) {
