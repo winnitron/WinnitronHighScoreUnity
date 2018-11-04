@@ -1,8 +1,10 @@
 using System.Security.Cryptography;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine.Networking;
 using UnityEngine;
+using SimpleJSON;
 
 namespace Winnitron {
 
@@ -13,9 +15,14 @@ namespace Winnitron {
         public string apiKey;
         public string apiSecret;
         public bool testMode = true;
+        protected string winnitronID;
 
         public delegate object Success(object results);
         protected delegate void Parser(UnityWebRequest www, Success success);
+
+        public void Awake() {
+            IdentifyWinnitron();
+        }
 
         protected IEnumerator Wait(UnityWebRequest www, Parser parser, Success success) {
             yield return www.SendWebRequest();
@@ -86,6 +93,24 @@ namespace Winnitron {
 
         private string ParseErrors(string json) {
             return json; // TODO
+        }
+
+        private void IdentifyWinnitron() {
+            winnitronID = System.Environment.GetEnvironmentVariable("WINNITRON_IDENTIFIER");
+
+            // Only Launcher >= v2.4.0 sets the env variable.
+            if (string.IsNullOrEmpty(winnitronID)) {
+                string machineOpts = "../../Options/winnitron_options.json";
+                JSONNode json;
+                try {
+                    json = JSON.Parse(File.ReadAllText(machineOpts));
+                    winnitronID = json["sync"]["apiKey"];
+                } catch (DirectoryNotFoundException) {
+                } catch (FileNotFoundException) {}
+            }
+
+            if (winnitronID.Trim() == "")
+                winnitronID = null;
         }
     }
 }
