@@ -214,11 +214,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 936320230}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3eee4996061b45829b018bd560a3fe9, type: 3}
+  m_Script: {fileID: 11500000, guid: 38b8f311aa72c449fb1bd6af957b469f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   apiKey: 
   apiSecret: 
+  testMode: 1
 --- !u!4 &936320232
 Transform:
   m_ObjectHideFlags: 0

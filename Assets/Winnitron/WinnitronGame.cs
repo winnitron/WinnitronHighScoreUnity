@@ -21,6 +21,10 @@ namespace Winnitron {
                 fields.AddField("test", "1");
             }
 
+            if (winnitronID != null) {
+                fields.AddField("winnitron_id", winnitronID);
+            }
+
             UnityWebRequest www = UnityWebRequest.Post(HOST + "/api/v1/high_scores", fields);
             AddHeaders(www);
             StartCoroutine(Wait(www, ParseHighScore, success));
@@ -31,6 +35,10 @@ namespace Winnitron {
 
             if (testMode) {
                 url += "&test=1";
+            }
+
+            if (winnitronID != null) {
+                url += "&winnitron_id=" + winnitronID;
             }
 
             UnityWebRequest www = UnityWebRequest.Get(url);
