@@ -6,16 +6,18 @@ namespace Winnitron {
 
         public string Name { get; private set; }
         public int Score { get; private set; }
-        // TODO: which winnitron?
+        public ArcadeMachine Winnitron { get; private set; }
 
-        public HighScore(string name, int score) {
+        public HighScore(string name, int score, ArcadeMachine machine = null) {
             Name = name;
             Score = score;
+            Winnitron = machine;
         }
 
         public static HighScore FromJson(string raw) {
             JSONNode json = JSON.Parse(raw);
-            return new HighScore(json["name"], json["score"].AsInt);
+            ArcadeMachine machine = ArcadeMachine.FromJson(json["arcade_machine"]);
+            return new HighScore(json["name"], json["score"].AsInt, machine);
         }
 
         public static HighScore[] ListFromJson(string raw) {
@@ -23,7 +25,8 @@ namespace Winnitron {
             HighScore[] scores = new HighScore[json.Count];
 
             for(int i = 0; i < json.Count; i++) {
-                scores[i] = new HighScore(json[i]["name"], json[i]["score"].AsInt);
+                ArcadeMachine machine = ArcadeMachine.FromJson(json[i]["arcade_machine"]);
+                scores[i] = new HighScore(json[i]["name"], json[i]["score"].AsInt, machine);
             }
 
             return scores;
