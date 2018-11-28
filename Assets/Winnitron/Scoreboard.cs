@@ -7,6 +7,9 @@ namespace Winnitron {
 
     public class Scoreboard : WinnitronConnection {
 
+        public const string ALL_WINNITRONS = "ALL_WINNITRONS";
+        public const string THIS_WINNITRON = "THIS_WINNITRON";
+
         public void Start() {
 
         }
@@ -30,15 +33,19 @@ namespace Winnitron {
             StartCoroutine(Wait(www, ParseHighScore, success));
         }
 
-        public void Get(int limit, Success success) {
+        public void Get(int limit, string winnitronScope, Success success) {
             string url = HOST + "/api/v1/high_scores?limit=" + limit;
 
             if (testMode) {
                 url += "&test=1";
             }
 
-            if (winnitronID != null) {
+            if (winnitronScope == THIS_WINNITRON) {
                 url += "&winnitron_id=" + winnitronID;
+            } else if (winnitronScope == ALL_WINNITRONS) {
+                // NOOP
+            } else {
+                url += "&winnitron_id=" + winnitronScope;
             }
 
             UnityWebRequest www = UnityWebRequest.Get(url);
@@ -56,19 +63,22 @@ namespace Winnitron {
             success(scores);
         }
 
-        // temp
         private object DefaultSuccess(object results) {
-            HighScore[] s = (HighScore[]) results;
-
-            try {
-                Debug.Log("success: " + s[0].ToString());
-            } catch (System.IndexOutOfRangeException) {
-                Debug.Log("success: []");
+            if (results.GetType().ToString() == "Winnitron.HighScore[]") {
+                PrintList((HighScore[]) results);
+            } else {
+                Debug.Log("Successfully created high score: " + results.ToString());
             }
 
             return null;
         }
 
-        private object Stub(object results) { return null; }
+        private void PrintList(HighScore[] scores) {
+            string msg = "Successfully fetched high scores:";
+            foreach (HighScore score in scores) {
+                msg += "\n\t" + score.ToString();
+            }
+            Debug.Log(msg);
+        }
     }
 }

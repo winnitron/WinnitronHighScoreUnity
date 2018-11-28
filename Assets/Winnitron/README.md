@@ -10,11 +10,11 @@
 ### Sending a high score
 
 ```c#
-
 HighScore score = new HighScore("Jim", 1000);
 scoreboard.Send(score, SuccessHandler);
 
-public object SuccessHandler(HighScore created) {
+public object SuccessHandler(object created) {
+  // created is an instance of HighScore
   // The world is your oyster.
 }
 ```
@@ -22,12 +22,24 @@ public object SuccessHandler(HighScore created) {
 ### Fetching the existing high score list
 
 ```c#
-scoreboard.Get(10, SuccessHandler)
+// top five scores on the Winnitron being played RIGHT NOW
+scoreboard.Get(5, Scoreboard.THIS_WINNITRON, SuccessHandler);
 
-public object SuccessHandler(HighScore[] scoreList) {
+// top ten scores across the entire Winnitron Network
+scoreboard.Get(10, Scoreboard.ALL_WINNITRONS, SuccessHandler);
+
+// top twenty scores on the Winnitron 1000
+scoreboard.Get(20, "winnitron-1000", SuccessHandler);
+
+public object SuccessHandler(object results) {
+  HighScore[] scoreList = (HighScore[]) results;
   // ...
 }
 ```
+
+### Test Sandbox
+
+Fetching high scores in test mode will only return scores that were also created in test mode.
 
 ## Contributing
 

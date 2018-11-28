@@ -9,7 +9,7 @@ using SimpleJSON;
 namespace Winnitron {
 
     public class WinnitronConnection : MonoBehaviour {
-        public const string VERSION = "0.1";
+        public const string VERSION = "1.0-alpha";
         protected const string HOST = "http://localhost:3000";
 
         public string apiKey;
@@ -37,7 +37,7 @@ namespace Winnitron {
         }
 
         protected void AddHeaders(UnityWebRequest www) {
-            www.SetRequestHeader("User-Agent", "Winnitron Game Client/" + VERSION + " http://winnitron.com");
+            www.SetRequestHeader("User-Agent", "Winnitron High Score Client/" + VERSION + " http://winnitron.com");
             www.SetRequestHeader("Authorization", Authorization(www));
         }
 
@@ -109,7 +109,7 @@ namespace Winnitron {
                 } catch (FileNotFoundException) {}
             }
 
-            if (winnitronID.Trim() == "")
+            if (string.IsNullOrEmpty(winnitronID))
                 winnitronID = null;
         }
     }
