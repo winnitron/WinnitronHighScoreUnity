@@ -1,6 +1,6 @@
 # Winnitron High Score Unity Client
 
-`v1.0-alpha`
+`v1.0.0`
 
 ## Usage
 
@@ -37,13 +37,17 @@ public object SuccessHandler(object results) {
 }
 ```
 
+### Error Handling
+
+If something goes awry - for example, the Winnitron your game is running on loses its network connection, or if the data you send is incomplete/invalid, the above methods will throw a `Winnitron.NetworkException`.
+
 ### Test Sandbox
 
 Fetching high scores in test mode will only return scores that were also created in test mode.
 
 ## Contributing
 
-https://github.com/winnitron/WinnitronDummyGame
+https://github.com/winnitron/WinnitronHighScoreUnity
 
 ## Oh god! Send help!
 
