@@ -9,8 +9,8 @@ using SimpleJSON;
 namespace Winnitron {
 
     public class WinnitronConnection : MonoBehaviour {
-        public const string VERSION = "1.0-alpha";
-        protected const string HOST = "http://localhost:3000";
+        public const string VERSION = "1.0.0";
+        protected const string HOST = "http://network.winnitron.com/";
 
         public string apiKey;
         public string apiSecret;
